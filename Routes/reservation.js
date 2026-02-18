@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const Reservation = require("../Models/Reservation");
+
+// CORRECTIF : Passage en minuscules pour correspondre à ton dossier 'models/reservation'
+const Reservation = require("../models/reservation");
 
 // GET : Récupérer toutes les réservations avec les détails inclus
 router.get("/reservations", async (req, res) => {
   try {
-    // .populate permet de remplacer l'ID par l'objet complet (nom, email, etc.)
+    // .populate permet de remplacer l'ID par l'objet complet
     const reservations = await Reservation.find()
       .populate("userId", "username email")
       .populate("roomId", "name pricePerNight");

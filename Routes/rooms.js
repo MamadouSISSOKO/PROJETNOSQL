@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Room = require("../Models/Room"); // Import du modèle
+
+// CORRECTIF : Passage en minuscules pour correspondre à ton dossier 'models/room'
+const Room = require("../models/room"); 
 
 // GET : Récupérer la liste réelle des chambres
 router.get("/rooms", async (req, res) => {
@@ -21,12 +23,12 @@ router.post("/rooms", async (req, res) => {
       name,
       capacity,
       pricePerNight,
-      isAvailable
+      isAvailable: isAvailable !== undefined ? isAvailable : true
     });
 
     const savedRoom = await newRoom.save();
     
-    // On renvoie l'objet complet avec son ID généré par MongoDB
+    // Renvoie l'objet avec l'ID généré (sera 'id' si le virtual est configuré dans le modèle)
     res.status(201).json(savedRoom);
   } catch (err) {
     res.status(400).json({ message: "Erreur lors de l'ajout", error: err.message });
