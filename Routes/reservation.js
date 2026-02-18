@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 // CORRECTIF : Passage en minuscules pour correspondre à ton dossier 'models/reservation'
-const Reservation = require("../models/reservation");
+const Reservation = require("../models/Reservation");
 
 // GET : Récupérer toutes les réservations avec les détails inclus
 router.get("/reservations", async (req, res) => {
