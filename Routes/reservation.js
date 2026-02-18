@@ -1,18 +1,40 @@
 const express = require("express");
 const router = express.Router();
+const Reservation = require("../Models/Reservation");
 
-// Cette route répondra à GET https://.../api/reservations
-router.get("/reservations", (req, res) => {
-  res.json([
-    { id: "101", userId: "1", roomId: "1", date: "2026-02-20" }
-  ]);
+// GET : Récupérer toutes les réservations avec les détails inclus
+router.get("/reservations", async (req, res) => {
+  try {
+    // .populate permet de remplacer l'ID par l'objet complet (nom, email, etc.)
+    const reservations = await Reservation.find()
+      .populate("userId", "username email")
+      .populate("roomId", "name pricePerNight");
+    res.json(reservations);
+  } catch (err) {
+    res.status(500).json({ message: "Erreur serveur", error: err.message });
+  }
 });
 
-// Route pour créer une réservation
-router.post("/reservations", (req, res) => {
-  const booking = req.body;
-  // Ici tu ajouterais ta logique Mongoose pour sauvegarder
-  res.status(201).json({ message: "Réservation confirmée !", booking });
+// POST : Créer une réservation réelle
+router.post("/reservations", async (req, res) => {
+  try {
+    const { userId, roomId, startDate, endDate, totalPrice } = req.body;
+
+    const newReservation = new Reservation({
+      userId,
+      roomId,
+      startDate,
+      endDate,
+      totalPrice
+    });
+
+    const savedReservation = await newReservation.save();
+    
+    // On renvoie la réservation avec son ID unique
+    res.status(201).json(savedReservation);
+  } catch (err) {
+    res.status(400).json({ message: "Impossible de réserver", error: err.message });
+  }
 });
 
 module.exports = router;
