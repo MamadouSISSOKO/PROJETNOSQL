@@ -3,6 +3,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const bodyParser = require('body-parser');
+const express = require("express");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger");
+const userRoutes = require("./routes/user");
+app.use("/", userRoutes);
 
 // Middleware
 //app.use(morgan('dev'));
@@ -70,3 +75,18 @@ app.use((req, res, next) => {
 });
 
 module.exports = app;
+
+
+
+
+
+
+app.use(express.json());
+
+// Swagger
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
