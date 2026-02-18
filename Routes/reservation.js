@@ -18,7 +18,7 @@ router.get("/reservations", async (req, res) => {
 });
 
 // POST : Créer une réservation réelle
-router.post("/reservations", async (req, res) => {
+router.post("/reservation", async (req, res) => {
   try {
     const { userId, roomId, startDate, endDate, totalPrice } = req.body;
 
