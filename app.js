@@ -14,7 +14,7 @@ app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // ===== Routes =====
-const userRoutes = require("./Routes/user");
+const userRoutes = require("./Routes/users");
 app.use("/api", userRoutes);
 
 // ===== MongoDB =====
